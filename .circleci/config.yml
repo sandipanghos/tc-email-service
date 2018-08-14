@@ -40,7 +40,7 @@ jobs:
           command: |
             echo 'Running MasterScript'
             cp ./../buildscript/master_deply_v4.2.sh .
-            ./master_deply_v4.2.sh -d ECS -e DEV -t $CIRCLE_SHA1 -s tcemail-var    
+            ./master_deply_v4.2.sh -d ECS -e DEV -t $CIRCLE_SHA1 -s tcemail-var,tcemail-var-common    
 
   "build-prod":
     docker:
