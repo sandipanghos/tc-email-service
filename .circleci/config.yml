@@ -87,7 +87,7 @@ workflows:
           filters:
             branches:
               only: ["dev","dev-mstest-fargate"]
-      # Production builds are executed on "master" branch only.
+      # Production builds are executed on "master" branch only
       - "build-prod":
           filters:
             branches:
