@@ -7,7 +7,14 @@ jobs:
       - image: docker:17.06.1-ce-git
     steps:
       # Initialization.
+      
       - checkout
+      - run:
+          name: Buildenv is executing
+          command: |
+            git clone --branch master https://github.com/topcoder-platform/tc-deploy-scripts ../buildscript
+            cp ./../buildscript/buildenv.sh .
+            ./buildenv.sh -b tcemail-var
       - setup_remote_docker
       - run:
           name: Installation of build dependencies.
@@ -36,7 +43,10 @@ jobs:
             sudo pip install awscli --upgrade
 
       - deploy:
-          command: ./deploy.sh DEV $CIRCLE_SHA1
+          command: |
+            echo 'Running MasterScript'
+            cp ./../buildscript/master_deply_v4.2.sh .
+            ./master_deply_v4.2.sh -d ECS -e DEV -t $CIRCLE_SHA1 -s tcemail-var -p FARGATE 
 
   "build-prod":
     docker:
@@ -82,7 +92,7 @@ workflows:
       - "build-dev":
           filters:
             branches:
-              only: ["dev"]
+              only: ["dev","dev-mstest-v3"]
       # Production builds are executed on "master" branch only.
       - "build-prod":
           filters:
