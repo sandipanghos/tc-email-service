@@ -43,8 +43,11 @@ jobs:
       - deploy:
           name: Masterscript Deploy script is executing
           command: |
+            echo "print aws repo $AWS_REPOSITORY"
+             echo "print aws repo with DEV  $DEV_AWS_REPOSITORY"
             cp ./../buildscript/master_deply_v4.2.sh .
-            ./master_deply_v4.2.sh -d ECS -e DEV -t $CIRCLE_SHA1 -s tcemail-var -p FARGATE 
+            ./master_deply_v4.2.sh -d ECS -e DEV -t $CIRCLE_SHA1 -s tcemail-var,tcemail-var-common -p FARGATE 
+            
 
   "build-prod":
     docker:
