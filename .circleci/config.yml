@@ -32,7 +32,9 @@ jobs:
       # Build of Docker image.
       - run:
           name: Build of Docker image
-          command: ./build.sh DEV
+          command: |
+            echo "print aws repo $AWS_REPOSITORY"
+            ./build.sh DEV
 
       # Caching node modules.
       - save_cache:
@@ -44,7 +46,7 @@ jobs:
           name: Masterscript Deploy script is executing
           command: |
             echo "print aws repo $AWS_REPOSITORY"
-             echo "print aws repo with DEV  $DEV_AWS_REPOSITORY"
+            echo "print aws repo with DEV  $DEV_AWS_REPOSITORY"
             cp ./../buildscript/master_deply_v4.2.sh .
             ./master_deply_v4.2.sh -d ECS -e DEV -t $CIRCLE_SHA1 -s tcemail-var,tcemail-var-common -p FARGATE 
             
