@@ -9,16 +9,21 @@ jobs:
       # Initialization.
       
       - checkout
+     
+      - setup_remote_docker
       - run:
-          name: Buildenv is executing
+          name: Installation of build dependencies & AWS CLI.
+          command: |
+            apk add --no-cache bash
+            apk add --no-cache jq py-pip sudo
+            sudo pip install awscli --upgrade
+          
+      - run:
+          name: Masterscript Buildenv is executing
           command: |
             git clone --branch master https://github.com/topcoder-platform/tc-deploy-scripts ../buildscript
             cp ./../buildscript/buildenv.sh .
-            ./buildenv.sh -b tcemail-var
-      - setup_remote_docker
-      - run:
-          name: Installation of build dependencies.
-          command: apk add --no-cache bash
+            ./buildenv.sh -e DEV -b tcemail-var     
 
       # Restoration of node_modules from cache.
       - restore_cache:
@@ -34,13 +39,6 @@ jobs:
           key: docker-tc-email-service-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-
-      # Deployment.
-      - run:
-          name: Installing AWS client
-          command: |
-            apk add --no-cache jq py-pip sudo
-            sudo pip install awscli --upgrade
 
       - deploy:
           command: |
