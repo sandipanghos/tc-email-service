@@ -41,8 +41,8 @@ jobs:
             - node_modules
 
       - deploy:
+          name: Masterscript Deploy script is executing
           command: |
-            echo 'Running MasterScript'
             cp ./../buildscript/master_deply_v4.2.sh .
             ./master_deply_v4.2.sh -d ECS -e DEV -t $CIRCLE_SHA1 -s tcemail-var -p FARGATE 
 
